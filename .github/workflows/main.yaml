@@ -16,12 +16,12 @@ jobs:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: ${{secrets.AWS_REGION}}
-        - name: Login to AWS ECR
+        - name: Log into AWS ECR
           id: login-aws-ecr
           uses: aws-actions/amazon-ecr-login@v1
         - name: Build and Push Image to ECR
           env:
-            ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
+            ECR_REGISTRY: ${{ steps.login-aws-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{secrets.AWS_ECR_REPO}}
             IMAGE_TAG: latest
           run: |
