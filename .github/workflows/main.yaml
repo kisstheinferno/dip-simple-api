@@ -59,9 +59,9 @@ jobs:
 
             commandOutput=$(aws ssm list-commands --command-id $command_id --query "Commands[0].StatusDetails" --output text)
 
-            echo "$commandOutput"
+            echo "$status"
 
-            if [ "$commandOutput" == "Success" ]; then
+            if [ "$status" == "Success" ]; then
               echo "Command executed successfully"
             else
               echo "Command failed"
