@@ -49,6 +49,14 @@ jobs:
               --comment "Pull Docker image and run it" \
               --parameters commands='[
               "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ steps.login-aws-ecr.outputs.registry }}",
-              ]')
+              ]' --query "Command.CommandId" --output text)
 
             echo "$command_id"
+
+            aws ssm wait command-executed \
+            --command-id $command_id \
+            --instance-id i-098d6abae738aad82
+
+            commandOutput=$(aws ssm list-commands --command-id $command_id)
+
+            echo "$commandOutput"
