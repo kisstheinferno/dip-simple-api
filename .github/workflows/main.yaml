@@ -49,13 +49,15 @@ jobs:
               --comment "Pull Docker image and run it" \
               --parameters commands='[
               "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ steps.login-aws-ecr.outputs.registry }}",
+              "docker pull ${{ steps.login-aws-ecr.outputs.registry }}/${{secrets.AWS_ECR_REPO}}:latest",
+              "run docker --rm -d -p 3000:3000 --name api ${{ steps.login-aws-ecr.outputs.registry }}/${{secrets.AWS_ECR_REPO}}:latest"
               ]' --query "Command.CommandId" --output text)
 
             echo "$command_id"
 
             aws ssm wait command-executed \
             --command-id $command_id \
-            --instance-id i-098d6abae738aad82
+            --instance-id i-098d6abae738aad82 || true
 
             status=$(aws ssm list-commands --command-id $command_id --query "Commands[0].StatusDetails" --output text)
 
@@ -63,6 +65,5 @@ jobs:
               echo "Command executed successfully"
             else
               echo "Command failed"
-              echo "Error: $status"
               exit 1
             fi
