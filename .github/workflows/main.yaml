@@ -49,9 +49,9 @@ jobs:
               --comment "Pull Docker image and run it" \
               --parameters commands='[
               "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ steps.login-aws-ecr.outputs.registry }}",
-              "docker stop ${{env.CONTAINER_NAME}} || true",
+              "docker stop ${{ vars.CONTAINER_NAME }} || true",
               "docker pull ${{ steps.login-aws-ecr.outputs.registry }}/${{secrets.AWS_ECR_REPO}}:latest",
-              "docker run --rm -d -p 3000:3000 --name ${{env.CONTAINER_NAME}} ${{ steps.login-aws-ecr.outputs.registry }}/${{secrets.AWS_ECR_REPO}}:latest"
+              "docker run --rm -d -p 3000:3000 --name ${{ vars.CONTAINER_NAME }} ${{ steps.login-aws-ecr.outputs.registry }}/${{secrets.AWS_ECR_REPO}}:latest"
               ]' --query "Command.CommandId" --output text)
 
             aws ssm wait command-executed \
