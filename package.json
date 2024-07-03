@@ -20,7 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
     "migration:run": "npm run typeorm migration:run -- -d ./src/datasource/datasource.ts",
-    "migration:generate": "npm run typeorm -- -d ./src/datasource/datasource.ts migration:generate ./src/migrations/add-todos-table"
+    "migration:generate": "npm run typeorm -- -d ./src/datasource/datasource.ts migration:generate ./src/migrations/edit-todos-table"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
