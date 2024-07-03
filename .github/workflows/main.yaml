@@ -54,7 +54,7 @@ jobs:
               "docker run --rm -d -p 3000:3000 -e DB_HOST=${{ secrets.DB_HOST }} -e DB_USERNAME=${{ secrets.DB_USERNAME }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e ENVIRONMENT=production --name ${{ vars.CONTAINER_NAME }} ${{ steps.login-aws-ecr.outputs.registry }}/${{secrets.AWS_ECR_REPO}}:latest"
               ]' --query "Command.CommandId" --output text)
 
-              echo "command_id=$command_id" >> $GITLHUB_ENV
+              echo "command_id=$command_id" >> $GITHUB_ENV
         - name: Wait for Docker commands to complete
           run: |
             echo ${{ env.command_id }}
