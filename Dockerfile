@@ -25,7 +25,7 @@ CMD npm run migration:run && npm run start:prod
 # export DOCKER_CLIENT_TIMEOUT=300
 # export COMPOSE_HTTP_TIMEOUT=300
 
-#fastest way to build the image because of memory saving
+#fastest way to build the image and of memory saving
 # Stage 1: Build the application
 # FROM --platform=linux/amd64 node:18 AS builder
 
