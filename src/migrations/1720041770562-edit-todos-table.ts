@@ -12,3 +12,6 @@ export class EditTodosTable1720041770562 implements MigrationInterface {
     }
 
 }
+
+
+
