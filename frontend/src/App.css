@@ -1,0 +1,49 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .card {
+    padding: 2em;
+    border: 1px solid #eaeaea;
+    margin: 2em;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+  }
+  
+  .complete {
+    background-color: #00b300;
+  }
+  
+  .incomplete {
+    background-color: #ff6666;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  h3 {
+    margin: 0;
+  }
+  
+  .todo-section {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+  }
+  
+  .icon {
+    cursor: pointer;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin: 0 auto;
+    width: 100%;
+  }
