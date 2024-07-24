@@ -25,8 +25,8 @@ export class TodosController {
     return await this.todoService.update(id, todo);
   }
 
-  @Delete()
-  async delete(@Body() id: number) {
+  @Delete(':id')
+  async delete(@Param("id") id: number) {
     return await this.todoService.delete(id);
   }
 }
