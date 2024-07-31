@@ -20,7 +20,7 @@ RUN npm run build
 EXPOSE 3000
 
 # Start the server using the production build
-CMD npm run migration:run && node dist/main.js
+CMD node dist/main.js
 
 # export DOCKER_CLIENT_TIMEOUT=300
 # export COMPOSE_HTTP_TIMEOUT=300
