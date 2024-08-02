@@ -51,6 +51,6 @@ jobs:
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./frontend
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
   Explore-GitHub-Actions:
-  runs-on: arc-runner-set
-  steps:
-  - run: echo "🎉 This job uses runner scale set runners!"
+    runs-on: arc-runner-set
+    steps:
+    - run: echo "🎉 This job uses runner scale set runners!"
