@@ -66,7 +66,7 @@ jobs:
         run: |
           echo "installing curl"
           sudo apt-get update
-          sudo apt-get install -y curl
+          sudo apt-get install -y curl unzip
       - name: Install Helm
         run: |
           echo "installing helm"
@@ -76,8 +76,9 @@ jobs:
       - name: Install AWS CLI
         run: |
           echo "installing aws cli"
-          sudo apt-get update
-          sudo apt-get install -y awscli
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
       - name: Configure kubectl
         run: |
           echo "configuring kubectl"
