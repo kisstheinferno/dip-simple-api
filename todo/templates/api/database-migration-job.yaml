@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: database-migration-job-{{ .Values.api.image.tag }}
+  labels:
+    app: todo
+    tier: api
+spec:
+  ttlSecondsAfterFinished: 10
+  template:
+    spec:
+      containers:
+      - name: database-migration
+        image: {{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}
+        env: 
+        - name: DB_HOST
+          value: {{ .Values.database.host }}
+        - name: DB_USERNAME
+          value: {{ .Values.database.username }}
+        - name: DB_PASSWORD
+          value: {{ .Values.database.password }}
+        - name: ENVIRONMENT
+          value: {{ .Values.environment }}
+        command: ["npm", "run", "migration:run"]
+      restartPolicy: Never
+  backoffLimit: 1

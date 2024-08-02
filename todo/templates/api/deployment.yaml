@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-api-deployment
+  labels:
+    app: todo
+    tier: api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: todo
+      tier: api
+  template:
+    metadata:
+      labels:
+        app: todo
+        tier: api
+    spec:
+      containers:
+      - name: todo-api
+        env: 
+        - name: DB_HOST
+          value: {{ .Values.database.host}}
+        - name: DB_USERNAME
+          value: {{ .Values.database.username }}
+        - name: DB_PASSWORD
+          value: {{ .Values.database.password }}
+        - name: ENVIRONMENT
+          value: {{ .Values.environment }}
+        image: {{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}
+        ports:
+        - containerPort: 3000

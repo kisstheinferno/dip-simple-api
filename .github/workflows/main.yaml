@@ -50,7 +50,29 @@ jobs:
           run: |
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./frontend
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-  Explore-GitHub-Actions:
-    runs-on: arc-runner-set
+  deploy:
+    name: Deploy to EKS
+    runs-on: arc-runner-set 
     steps:
-    - run: echo "🎉 This job uses runner scale set runners!"
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{secrets.AWS_REGION}}
+      - name: Install Helm
+        run: |
+          echo "installing helm"
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+      - name: Configure kubectl
+        run: |
+          echo "configuring kubectl"
+          aws eks --name ${{secrets.K8S_CLUSTER_NAME}} --region ${{secrets.AWS_REGION}} update-kubeconfig 
+      - name: Install/Update Helm Chart
+        run: |
+          echo "installing/updating helm chart"
+          helm upgrade --install todo ./todo --set api.image.repository=${{secrets.API_IMAGE_URI}} --set frontend.image.repository=${{secrets.FRONTEND_IMAGE_URI}} --set database.host=${{secrets.DB_HOST}} --set database.username=${{secrets.DB_USERNAME}} --set database.password=${{secrets.DB_PASSWORD}}
