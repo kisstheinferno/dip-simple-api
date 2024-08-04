@@ -51,7 +51,7 @@ function App() {
   return (
     <div className="container">
       <div className="card">
-        <h3>What needs to be done? EDIT</h3>
+        <h3>What needs to be done? Looking at a list of todos!</h3>
         <div className="form">
           <input
             type="text"
