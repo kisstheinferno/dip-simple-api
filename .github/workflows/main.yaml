@@ -52,6 +52,7 @@ jobs:
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
   deploy:
     name: Deploy to EKS
+    needs: [build-api, build-frontend]
     runs-on: arc-runner-set 
     steps:
       - name: Checkout
@@ -62,28 +63,23 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{secrets.AWS_REGION}}
-      - name: Install curl
+      - name: Install curl and unzip
         run: |
-          echo "installing curl"
           sudo apt-get update
           sudo apt-get install -y curl unzip
       - name: Install Helm
         run: |
-          echo "installing helm"
           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
           chmod 700 get_helm.sh
           ./get_helm.sh
       - name: Install AWS CLI
         run: |
-          echo "installing aws cli"
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip awscliv2.zip
           sudo ./aws/install
       - name: Configure kubectl
         run: |
-          echo "configuring kubectl"
           aws eks update-kubeconfig --name ${{ secrets.K8S_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }} 
       - name: Install/Update Helm Chart
         run: |
-          echo "installing/updating helm chart"
           helm upgrade --install todo ./todo --set api.image.repository=${{ secrets.API_IMAGE_URI }} --set frontend.image.repository=${{ secrets.FRONTEND_IMAGE_URI }} --set database.host=${{ secrets.DB_HOST }} --set database.username=${{ secrets.DB_USERNAME }} --set database.password=${{ secrets.DB_PASSWORD }}
