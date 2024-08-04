@@ -23,7 +23,7 @@ jobs:
           env:
             ECR_REGISTRY: ${{ steps.login-aws-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{secrets.API_IMAGE_REPO}}
-            IMAGE_TAG: v2
+            IMAGE_TAG: ${{ github.sha }}
           run: |
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./api
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
@@ -46,7 +46,7 @@ jobs:
           env:
             ECR_REGISTRY: ${{ steps.login-aws-ecr.outputs.registry }}
             ECR_REPOSITORY: ${{secrets.FRONTEND_IMAGE_REPO}}
-            IMAGE_TAG: v2
+            IMAGE_TAG: ${{ github.sha }}
           run: |
             docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./frontend
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
@@ -82,4 +82,4 @@ jobs:
           aws eks update-kubeconfig --name ${{ secrets.K8S_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }} 
       - name: Install/Update Helm Chart
         run: |
-          helm upgrade --install todo ./todo --set api.image.repository=${{ secrets.API_IMAGE_URI }} --set frontend.image.repository=${{ secrets.FRONTEND_IMAGE_URI }} --set database.host=${{ secrets.DB_HOST }} --set database.username=${{ secrets.DB_USERNAME }} --set database.password=${{ secrets.DB_PASSWORD }}
+          helm upgrade --install todo ./todo --set api.image.repository=${{ secrets.API_IMAGE_URI }} --set frontend.image.repository=${{ secrets.FRONTEND_IMAGE_URI }} --set database.host=${{ secrets.DB_HOST }} --set database.username=${{ secrets.DB_USERNAME }} --set database.password=${{ secrets.DB_PASSWORD }} --set api.image.tag=${{ github.sha }} --set frontend.image.tag=${{ github.sha }}
